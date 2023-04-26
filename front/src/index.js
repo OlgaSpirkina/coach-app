@@ -5,6 +5,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Home from './pages/Home'
 import About from './pages/About'
+import Trainers from './pages/Trainers'
 
 function App(){
   return (
@@ -14,11 +15,13 @@ function App(){
         <nav>
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
+          <Link to="/trainers">Trainers</Link>
         </nav>
       </header>
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/about" element={<About/>}/>
+        <Route path="/trainers" element={<Trainers/>}/>
       </Routes>
     </BrowserRouter>
   )

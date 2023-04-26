@@ -3,6 +3,14 @@ const conn = require('./database.js')
 const app = express()
 app.use(express.json())
 //
+app.get("/api/trainers",(req,res)=>{
+  let sql = 'SELECT * FROM trainers ORDER BY fname;'
+  conn.query(sql, function(err, result){
+    if(err) throw err;
+    console.log(result)
+    res.send({"trainers": result})
+  }) 
+})
 app.post("/api",(req,res)=>{
   let sql = 'SELECT * FROM trainers where email = ?;'
   conn.query(sql, [req.body.email], function(err, result){
