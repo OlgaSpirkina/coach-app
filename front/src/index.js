@@ -6,22 +6,19 @@ import reportWebVitals from './reportWebVitals';
 import Home from './pages/Home'
 import About from './pages/About'
 import Trainers from './pages/Trainers'
+import TrainerDetails from './pages/TrainerDetails'
+import Layout from './components/Layout'
 
 function App(){
   return (
     <BrowserRouter>
-      <header>
-        <Link to="/">#Fit et Sens</Link>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-          <Link to="/trainers">Trainers</Link>
-        </nav>
-      </header>
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/about" element={<About/>}/>
-        <Route path="/trainers" element={<Trainers/>}/>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/about" element={<About/>}/>
+          <Route path="/trainers" element={<Trainers/>}/>
+          <Route path="/trainers/:id" element={<TrainerDetails/>}/>
+        </Route>
       </Routes>
     </BrowserRouter>
   )
