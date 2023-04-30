@@ -1,8 +1,10 @@
 const express = require('express')
 const conn = require('./database.js')
+const userRouter = require('./modules/pages/user.js')
 const app = express()
 app.use(express.json())
 //
+
 app.get("/api/trainers",(req,res)=>{
   let sql = 'SELECT * FROM trainers ORDER BY fname;'
   conn.query(sql, function(err, result){
@@ -27,6 +29,6 @@ app.post("/api",(req,res)=>{
     res.send({"trainers": result})
   }) 
 })
-
+app.use('/user', userRouter)
 // Proxy: http://127.0.0.1:5000/
 app.listen(5000,()=>{console.log("Server started")})
