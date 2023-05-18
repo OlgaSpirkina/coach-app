@@ -1,22 +1,23 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { monthObject } from '../functions/MonthObject'
-
-const currentMonth = new Date().getMonth()+1;
-export default function UserCalendarHeader({props}){
+//
+export default function UserCalendarHeader({props, onRemoveParent}){
     return props.map(prop => (
         <NavLink
-        className =
-        {
-            (({isActive}) => (isActive) ? "active-link" : "")
-        }
-            key={prop}
-            to={{
-                pathname:`${prop}` 
-            }}
-        >
-           {monthObject[prop]} 
-         </NavLink>
+            onClick={onRemoveParent}
+            className =
+            {
+                (({isActive}) => (isActive) ? "active-link user-calendar-link" : "user-calendar-link")
+            }
+                id={`month_${prop}`}
+                key={prop}
+                to={{
+                    pathname:`${prop}` 
+                }}
+            >
+            {monthObject[prop]} 
+        </NavLink>
     ))
     
 }

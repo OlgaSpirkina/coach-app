@@ -88,6 +88,76 @@ label{
   border-radius: .3rem;
   border: 1px solid darkgrey;
 }
+/* Calendar Container */
+.calendar {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+/* Calendar Header */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.prev-button,
+.next-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 8px;
+}
+
+.month-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Calendar Grid */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Calendar Day */
+.calendar-day {
+  text-align: center;
+  font-size: 14px;
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 4px;
+}
+.today{
+  color: #20B2AA;
+}
+.has-classes{
+  background-color: pink;
+}
+.disclaimer-month{
+  width: 100%;
+  text-align: center;
+  padding: .5rem 0;
+  margin: 1rem 0;
+}
+.calendar-day:hover {
+  background-color: #f2f2f2;
+}
+/* */
 footer{
   position: absolute;
   bottom: 0;

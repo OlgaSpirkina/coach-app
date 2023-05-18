@@ -1,12 +1,19 @@
 import React from 'react'
-import UserCalendarHeader from '../../components/UserCalendarHeader';
-import { monthObject } from '../../functions/MonthObject';
-import Calendar from '../../components/Calendar';
+import UserCalendarHeader from '../../components/UserCalendarHeader'
 import UserMonths from './UserMonths';
+import Calendar from '../../components/Calendar'
+//
 
-const currentMonth = new Date().getMonth()+1;
-export default function UserCalendar(){
+export default function UserCalendar({show}){
     const [month, setMonth] = React.useState([]);
+    const [showParent, setShowParent] = React.useState(show);
+
+    const handleRemoveParent = () => {
+        setShowParent(false);
+    };
+    const getBackCalendar = () => {
+        setShowParent(true);
+    }
     React.useEffect(()=>{
         fetch("/user")
             .then(result => result.json())
@@ -19,31 +26,15 @@ export default function UserCalendar(){
         <h2>Calendar Page</h2>
         <nav>
             {
-                monthList.includes(currentMonth)
-                    ?
-                (
-                    <UserCalendarHeader props={monthList} />
-                )
-                    :
-                    <>
-                    <a href="" className="active-link">{monthObject[currentMonth]}</a>
-                    {<UserCalendarHeader props={monthList}/>}
-                    </>
+              <UserCalendarHeader props={monthList} onRemoveParent={handleRemoveParent} />
             }
         </nav>
         <div>
-        {
-                monthList.includes(currentMonth)
-                    ?
-                (
-                <>
+            {
+                <>  
+                    {(showParent === true) ? <Calendar currentYear={new Date().getFullYear()} currentMonth={new Date().getMonth()} generalorspecific={0}/> : <div></div>}
                     <UserMonths />
-                </>
-                )
-                    :
-                    <p>
-                        Aucun cours n'est planifié pour le mois de {monthObject[currentMonth]}
-                    </p>
+                </>   
             }
         </div>
         </>
