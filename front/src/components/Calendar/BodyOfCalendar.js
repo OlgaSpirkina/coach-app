@@ -23,8 +23,12 @@ export default function BodyOfCalendar({...props}){
             ))}
             {currentMonthObject.map(day => (
                 <div key={day.monthOfYear+''+day.dayInMonth} 
-                className={`calendar-day ${(`${day.dayInMonth}_${day.monthOfYear}` === today) ? 'today' : ''} ${(props.planning.includes(day.dayInMonth)) ? 'has-classes' : ''}`}
-    
+                className={
+                    `calendar-day 
+                    ${(`${day.dayInMonth}_${day.monthOfYear}` === today) ? 'today' : ''} 
+                    ${(props.planning.includes(day.dayInMonth)) ? 'has-classes' : ''}
+                    `
+                }
                 
                 >
                     <b>{day.dayInMonth}</b>
