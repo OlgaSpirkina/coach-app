@@ -1,43 +1,119 @@
+// import React, { useState, useEffect } from 'react';
+// import { useParams } from 'react-router-dom';
+// import { monthObject } from '../../functions/MonthObject';
+// import Calendar from '../../components/Calendar/Calendar';
+
+// export default function UserMonths() {
+//   const params = useParams();
+//   let monthPlanning;
+//   let calendar;
+//   const [themonth, setMonth] = useState(null);
+//   const [currentMonthIndex, setCurrentMonthIndex] = useState(0);
+
+//   useEffect(() => {
+//     fetch(`/user/${params.monthid}`)
+//       .then(res => res.json())
+//       .then(data => {
+//         setMonth(data.month);
+//         setCurrentMonthIndex(data.month.findIndex(day => day.choose_month === data.month[0].choose_month));
+//       });
+//   }, [params.monthid]);
+
+//   themonth !== null
+//     ? (monthPlanning = themonth.map(day => (
+//         <div key={day.id} className="day-planning-list">
+//           <h2>{day.company} {day.company_site}</h2>
+//           <p>{day.date}</p>
+//         </div>
+//       )))
+//     : (monthPlanning = "");
+
+//   themonth !== null
+//     ? (calendar = themonth.map((day, index) =>
+//         index === 0 ? (
+//           <Calendar
+//             key={index}
+//             currentYear={day.choose_years}
+//             currentMonth={currentMonthIndex}
+//           />
+//         ) : null
+//       ))
+//     : (calendar = "");
+
+//   return (
+//     params.monthid && themonth !== null ? (
+//       <>
+//         {calendar}
+//         <div id="month-container">
+//           <h1>Planning du mois {monthObject[params.monthid]}</h1>
+//           <div id="month-list-parent">{monthPlanning}</div>
+//         </div>
+//       </>
+//     ) : (
+//       <div>Loading...</div>
+//     )
+//   );
+// }
+
+
+
+
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { monthObject } from '../../functions/MonthObject'
-import Calendar from '../../components/Calendar'
+import NewCalendar from '../../components/Calendar/NewCalendar'
 //
 export default function UserMonths() {
     const params = useParams()
     let monthPlanning;
-    let datesOfClasses = [];
-    let year;
-    let thismonth;
-    const [themonth, setMonth] = React.useState(null)
+    let calendar;
+    const [themonth, setMonth] = React.useState(null);
     React.useEffect(() => {
         fetch(`/user/${params.monthid}`)
             .then(res => res.json())
             .then(data => setMonth(data.month))
     }, [params.monthid]);
-    //datesOfClasses = [...new Set(themonth.map(day => (parseInt(day.date.split("-")[2].slice(0,2),10))))]
-    (themonth !== null)
+    (themonth !== null) 
         ?
-        (
-            monthPlanning = themonth.map(day => (
-                <div key={day.id} className="day-planning-list">
-                    <h2>{day.company} {day.company_site}</h2>
-                    <p>{day.date}</p>
-                </div>)
-            )
-           
+    (
+        monthPlanning = themonth.map(day => (
+            <div key={day.id} className="day-planning-list">
+                <h2>{day.company} {day.company_site}</h2>
+                <p>{day.date}</p>
+            </div>)
         )
+        
+    )
         :
-        (
-            monthPlanning = "Consultez votre planning ici"
-        )
+    (
+        monthPlanning = ""
+    );
+    (themonth !== null) 
+        ?
+    (
+        calendar = themonth.map((day, index)=>(
+            (index === 0)
+                ?
+            (<NewCalendar 
+                key={index}
+                currentYear={day.choose_years} 
+                currentMonth={day.choose_month - 1}
+            />)
+                :
+            (null)
+        ))
+    )
+        :
+    (
+        calendar = ""
+    );
 
     return (
         (params.monthid && themonth !== null)
             ?
             (
                 <>
-                    
+                    {calendar}
                     <div id="month-container">
                         <h1>Planning du mois {monthObject[params.monthid]}</h1>
                         <div id="month-list-parent">
@@ -48,12 +124,8 @@ export default function UserMonths() {
                     )
                     :
                     (
-                       null
+                       <div>Loading...</div>
                     )
     )
 
 }
-//<Calendar currentYear={themonth[0].choose_years} currentMonth={themonth[0].choose_month} generalorspecific={1}/>
-/*
-
-*/
