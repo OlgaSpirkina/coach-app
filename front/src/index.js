@@ -26,7 +26,7 @@ function App(){
           <Route path="user" element={<UserLayout />}>
             <Route index element={<UserDashboard />}/>
             <Route path="company" element={<UserCompany />}/>
-            <Route path="calendar" element={<UserCalendar show={true}/>} >
+            <Route path="calendar/*" element={<UserCalendar />} >
               <Route path=":monthid" element={<UserMonths />}/>
             </Route>
           </Route>

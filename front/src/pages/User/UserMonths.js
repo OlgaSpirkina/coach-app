@@ -46,7 +46,7 @@ export default function UserMonths() {
             )
             :
             (
-                <div>Loading...</div>
+                null
             )
     )
 
