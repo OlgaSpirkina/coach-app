@@ -2,10 +2,11 @@ import React, {useState} from 'react'
 import { useParams } from 'react-router-dom'
 import BodyOfCalendar from './BodyOfCalendar';
 import { monthObject } from '../../functions/MonthObject'
+import DetailsCalendar from './DetailsCalendar';
 //
 export default function NewCalendar({...props}) {
     const params = useParams()
-    const {currentYear} = props;
+    const {currentYear, onDataSelect} = props;
     const [data, setData] = useState([]);
     let planning = [];
     let disclaimer;
@@ -37,7 +38,7 @@ export default function NewCalendar({...props}) {
                 <div className="weekday">Ven</div>
                 <div className="weekday">Sam</div>
                 <div className="weekday">Dim</div>
-                <BodyOfCalendar month={params.monthid-1} year={currentYear} planning={planning} />
+                <BodyOfCalendar onDataSelect={onDataSelect} month={params.monthid-1} year={currentYear} planning={planning} />
             </div>
         </div>
       </>

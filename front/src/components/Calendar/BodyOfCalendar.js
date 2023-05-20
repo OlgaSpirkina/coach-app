@@ -3,6 +3,7 @@ import React from 'react'
 const today = `${parseInt(new Date().getDate())}_${new Date().getMonth()}`;
 
 export default function BodyOfCalendar({ ...props }) {
+    const { onDataSelect } = props;
     let currentMonthObject = findWeeksInYear(props.year).filter(
       item => item.monthOfYear === props.month
     );
@@ -37,6 +38,7 @@ export default function BodyOfCalendar({ ...props }) {
           .then(res => res.json())
           .then(data => {
             setFetchedData(data.daily_planning);
+            onDataSelect(data.daily_planning);
           });
       } else {
         firstUpdate.current = false;
@@ -44,29 +46,31 @@ export default function BodyOfCalendar({ ...props }) {
     }, [dailyClasses, monthOfDay, yearOfDay]);
     //
     React.useEffect(() => {
-        console.log(fetchedData);
+      //console.log(fetchedData);
     }, [fetchedData]);
-    
     return (
       <>
-        {missingDays.map((day, index) => (
-          <div key={index}></div>
-        ))}
-        {currentMonthObject.map(day => (
-          <div
-            key={day.monthOfYear + "" + day.dayInMonth}
-            className={`calendar-day ${
-              `${day.dayInMonth}_${day.monthOfYear}` === today ? "today" : ""
-            } ${props.planning && props.planning.includes(day.dayInMonth) ? "has-classes" : ""}`}
-            onClick={() => {
-              if (props.planning && props.planning.includes(day.dayInMonth)) {
-                handleClick({ day: day.dayInMonth, month: day.monthOfYear, year: day.year });
-              }
-            }}
-          >
-            <b>{day.dayInMonth}</b>
-          </div>
-        ))}
+          {missingDays.map((day, index) => (
+            <div key={index}></div>
+          ))}
+          {currentMonthObject.map(day => (
+            <div
+              key={day.monthOfYear + "" + day.dayInMonth}
+              className={`calendar-day ${
+                `${day.dayInMonth}_${day.monthOfYear}` === today ? "today" : ""
+              } ${props.planning && props.planning.includes(day.dayInMonth) ? "has-classes" : ""}`}
+              onClick={() => {
+                if (props.planning && props.planning.includes(day.dayInMonth)) {
+                  handleClick({ day: day.dayInMonth, month: day.monthOfYear, year: day.year });
+                  
+                }
+              }}
+            >
+              <b>{day.dayInMonth}</b>
+            </div>
+          ))}
+        
+         
       </>
     );
   }
