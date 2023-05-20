@@ -1,6 +1,7 @@
 const express = require('express')
 const conn = require('./database.js')
 const userRouter = require('./modules/pages/user.js')
+const companiesRouter = require('./modules/pages/companies.js')
 const app = express()
 app.use(express.json())
 //
@@ -30,5 +31,6 @@ app.post("/api",(req,res)=>{
   }) 
 })
 app.use('/user', userRouter)
+app.use('/companies', companiesRouter)
 // Proxy: http://127.0.0.1:5000/
 app.listen(5000,()=>{console.log("Server started")})

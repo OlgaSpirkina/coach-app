@@ -24,14 +24,13 @@ export default function BodyOfCalendar({ ...props }) {
         }
       }
     }
-  
     const handleClick = ({ ...params }) => {
       const { day, month, year } = params;
       setDailyClasses(day);
       setMonthOfDate(month + 1);
       setYearOfDay(year);
     };
-  
+    //
     React.useEffect(() => {
       if (!firstUpdate.current) {
         fetch(`/user/planning?year=${yearOfDay}&month=${monthOfDay}&day=${dailyClasses}`)
@@ -43,7 +42,7 @@ export default function BodyOfCalendar({ ...props }) {
         firstUpdate.current = false;
       }
     }, [dailyClasses, monthOfDay, yearOfDay]);
-  
+    //
     React.useEffect(() => {
         console.log(fetchedData);
     }, [fetchedData]);
