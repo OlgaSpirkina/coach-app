@@ -8,7 +8,6 @@ import Invoice from '../../components/Invoice/Invoice'
 export default function UserMonths() {
     const params = useParams()
     const [selectedData, setSelectedData] = React.useState(null);
-    const [showDetails, setShowDetails] = React.useState(true);
     let calendar;
     const [themonth, setMonth] = React.useState(null);
     React.useEffect(() => {
@@ -18,9 +17,6 @@ export default function UserMonths() {
     }, [params.monthid]);
     const handleDataSelection = (data) => {
         setSelectedData(data);
-    };
-    const handleUnmountDetails = () => {
-        setShowDetails(false);
     };
     calendar = themonth && themonth.map((day, index) =>
         index === 0 ? (
@@ -38,8 +34,8 @@ export default function UserMonths() {
             (
                 <>
                     {calendar}
-                    {selectedData && showDetails && (
-                        <DetailsCalendar data={selectedData} onUnmount={handleUnmountDetails} showDetails={showDetails}/>
+                    {selectedData && (
+                        <DetailsCalendar data={selectedData} />
                     )}
                     
                     <Invoice classes={themonth} monthIndex={params.monthid}/>

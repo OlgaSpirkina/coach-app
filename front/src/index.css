@@ -1,3 +1,9 @@
+:root {
+  --darkBlue: #004479;
+  --darkGrey: #26252d;
+  --theYellow: #f19711;
+  --lighterYellow: rgba(241, 151, 17, 0.75);
+}
 * {
   box-sizing: border-box;
 }
@@ -32,7 +38,7 @@ header a:hover{
 }
 .active-link{
   font-weight: bold;
-  color: lightseagreen;
+  color: var(--darkBlue);
   text-decoration: underline;
 }
 code {
@@ -68,7 +74,7 @@ label{
   height: 10rem;
   margin: 1rem;
   padding: .5rem;
-  border: 1px solid lightgray;
+  border: 1px solid var(--darkGrey);
   border-radius: .3rem;
 }
 .trainer-list a{
@@ -89,13 +95,14 @@ label{
   margin: 1rem;
   padding: .5rem;
   border-radius: .3rem;
-  border: 1px solid darkgrey;
+  border: 1px solid var(--darkGrey);
 }
-/* Calendar Container */
-.calendar {
+/* Calendar  & Card Container */
+.calendar,
+.card {
   width: 100%;
   max-width: 320px;
-  margin: 0 auto;
+  margin: 1rem auto;
   background-color: #f2f2f2;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -151,7 +158,7 @@ label{
   color: #20B2AA;
 }
 .has-classes{
-  background-color: pink;
+  background-color: var(--lighterYellow);
 }
 .disclaimer-month{
   width: 100%;
@@ -197,7 +204,45 @@ tbody tr:nth-child(even) {
 .invoice-cell-container span {
   white-space: nowrap;
 }
-/* */
+/*** Daily Planning Card ***/
+.daily_card_icon{
+  position: relative;
+  float: right;
+}
+.daily_card_icon::hover{
+  transform: scale(1.1);
+}
+.daily_card_icon .daily_card_moon{
+  font-size:  1.5rem;
+}
+.daily_card_icon span{
+  font-size:  2rem;
+}
+.daily_card_moon{
+  color: var(--darkGrey);
+}
+.daily_card_sun{
+  color: var(--theYellow);
+}
+.daily_card_container{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid var(--darkGrey);
+}
+.card__section {
+  margin-bottom: 8px;
+}
+
+.card__label {
+  font-weight: bold;
+}
+
+.card__value {
+  margin-left: 8px;
+}
+
+/***  ***/
 footer{
   position: relative;
   bottom: 0;
@@ -205,6 +250,9 @@ footer{
   margin: 1rem;
 }
 @media (max-width: 600px) {
+  .daily_card_container{
+    flex-direction: column;
+  }
   table {
     font-size: 11px;
   }
@@ -223,4 +271,20 @@ footer{
     display: flex;
     flex-direction: column;
   }
+  
+}
+@media (min-width: 768px) {
+ 
+  .card {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .daily_card_icon{
+    position: absolute;
+    right: 0;
+    padding: 0 .5rem;
+  }
+
 }
