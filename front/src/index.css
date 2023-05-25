@@ -32,7 +32,7 @@ header{
 }
 header a:hover{
   font-weight: bold;
-  color: lightseagreen;
+  color: var(--darkBlue);
   padding-bottom: .5rem;
   text-decoration: underline;
 }
@@ -52,6 +52,20 @@ form {
 label{
   margin: .5rem;
   padding: .5rem;
+}
+/* Dashboard */
+.two-days-planning{
+  margin: 1rem;
+  padding: .5rem;
+  border: 1px solid #000;
+}
+.two-days-planning h3,
+.two-days-planning p{
+  width: 100%;
+  text-align: center;
+}
+.two-days-planning-today{
+  border: 2px solid var(--darkBlue); 
 }
 /* Trainers page */
 #trainer-container{
@@ -155,7 +169,8 @@ label{
   border-radius: 4px;
 }
 .today{
-  color: #20B2AA;
+  color: var(--darkBlue);
+  border: 2px solid var(--darkBlue);
 }
 .has-classes{
   background-color: var(--lighterYellow);

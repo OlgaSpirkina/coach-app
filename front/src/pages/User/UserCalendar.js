@@ -7,7 +7,6 @@ import Calendar from '../../components/Calendar/Calendar';
 export default function UserCalendar() {
   const [month, setMonth] = React.useState([]);
   const [showParent, setShowParent] = React.useState(true);
-
   React.useEffect(() => {
     fetch('/user')
       .then(result => result.json())
@@ -25,8 +24,19 @@ export default function UserCalendar() {
       <div>
         {showParent ? (
           <Routes>
-            <Route path="/*" element={<Calendar currentYear={new Date().getFullYear()} currentMonth={new Date().getMonth()} generalorspecific={0} arebuttons={true} />} />
-            <Route path="/:monthid" element={<UserMonths />} />
+            <Route path="/*" element={
+              <Calendar 
+                currentYear={new Date().getFullYear()} 
+                currentMonth={new Date().getMonth()} 
+                generalorspecific={0} 
+                arebuttons={true} 
+              />
+              } 
+            />
+            <Route path="/:monthid" element={
+              <UserMonths />
+              } 
+            />
           </Routes>
         ) : null}
       </div>

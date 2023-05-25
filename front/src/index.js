@@ -8,7 +8,7 @@ import About from './pages/About'
 import Trainers from './pages/Trainer/Trainers'
 import TrainerDetails from './pages/Trainer/TrainerDetails'
 import UserLayout from './components/UserLayout'
-import UserCompany from './pages/User/UserCompanies'
+import UserSlot from './pages/User/UserSlot'
 import UserCalendar from './pages/User/UserCalendar'
 import UserMonths from './pages/User/UserMonths'
 import UserDashboard from './pages/User/UserDashboard'
@@ -25,7 +25,7 @@ function App(){
           <Route path="trainers/:id" element={<TrainerDetails/>}/>
           <Route path="user" element={<UserLayout />}>
             <Route index element={<UserDashboard />}/>
-            <Route path="company" element={<UserCompany />}/>
+            <Route path="slot" element={<UserSlot />}/>
             <Route path="calendar/*" element={<UserCalendar />} >
               <Route path=":monthid" element={<UserMonths />}/>
             </Route>

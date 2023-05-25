@@ -8,17 +8,17 @@ export default function UserHeader(){
                 to="/user" 
                 end
                 className={({isActive}) => isActive ? "active-link" : ""}
-                >Dashboard
+                >Acceuil
             </NavLink>
             <NavLink 
-                to="/user/company" 
+                to="/user/slot" 
                 className={({isActive}) => isActive ? "active-link" : ""}
-                >Company
+                >Créneaux 
             </NavLink>
             <NavLink 
                 to="/user/calendar" 
                 className={({isActive}) => isActive ? "active-link" : ""}
-                >Calendar
+                >Calendrier
             </NavLink>
         </nav>
     )

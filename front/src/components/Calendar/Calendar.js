@@ -9,7 +9,7 @@ export default function Calendar({...props}) {
     const [year, setYear] = useState(currentYear);
     const [data, setData] = useState([]);
     let planning = [];
-    let disclaimer;
+    let disclaimer = 'Choisissez le mois dans la barre de navigation afin de consulter votre planning';
   
     const handleBackClick = () => {
       setMonth(prevMonth => (prevMonth === 0 ? 11 : prevMonth - 1));
@@ -64,3 +64,4 @@ export default function Calendar({...props}) {
       </>
     );
   }
+  

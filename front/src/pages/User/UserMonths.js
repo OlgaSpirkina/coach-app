@@ -6,7 +6,7 @@ import DetailsCalendar from '../../components/Calendar/DetailsCalendar'
 import Invoice from '../../components/Invoice/Invoice'
 //
 export default function UserMonths() {
-    const params = useParams()
+    const params = useParams();
     const [selectedData, setSelectedData] = React.useState(null);
     let calendar;
     const [themonth, setMonth] = React.useState(null);
