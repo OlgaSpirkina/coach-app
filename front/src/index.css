@@ -256,13 +256,125 @@ tbody tr:nth-child(even) {
 .card__value {
   margin-left: 8px;
 }
+/*** Create free slot request ***/
+.slot-display-hide-parent{
+  border-bottom: 2px solid #000;
+  padding-bottom: 1rem;
+}
+.carousel{
+  width: 100%;
+  display: flex;
+  flex-direction: row !important;
+  justify-content: space-between;
+  align-items: center;
+}
+.nex-prev-carousel{
+  font-size:  2.5rem;
+  color: var(--theYellow) !important;
+  fill: var(--theYellow) !important;
+}
+.icon-calendar-validated{
+  font-size: 2rem;
+  fill: green !important;
+  stroke: green !important;
+}
+.icon-calendar-waiting{
+  font-size: 2rem;
+  fill: rgb(207, 20, 20) !important;
+}
+.slot-display-hide{
+  min-width: 400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
+}
+.slot-display-hide svg{
+  font-size: 2rem;
+}
+.close-icon{
+  transform: rotateX(180deg)
+}
+#userslot-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#userslot-container div{
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem auto;
+}
+#userslot-container div h1{
+  color: rgb(207, 20, 20);
+  font-weight: bold;
+}
+#userslot-container div p{
+  margin: .5rem;
+  text-align: center;
+  line-height: 2;
+}
+#userslot-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 2px solid var(--theYellow);
+  border-radius: .3rem;
+}
+#userslot-form p{
+  width: 100%;
+}
+#userslot-form label {
+  display: block;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#userslot-form input,
+#userslot-form select {
+  width: 100%;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+#userslot-form input[type="radio"] {
+  -ms-transform: scale(1.5); 
+  -webkit-transform: scale(1.5); 
+  transform: scale(1.5);
+  border: 1px solid var(--theYellow);
+  color: var(--theYellow);
+}
+#userslot-form button {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 /***  ***/
 footer{
   position: relative;
   bottom: 0;
   left: 0;
   margin: 1rem;
+}
+@media (min-width: 576px) {
+  #userslot-form,
+  #userslot-container div,
+  .slot-display-hide {
+    max-width: 600px;
+  }
 }
 @media (max-width: 600px) {
   .daily_card_container{

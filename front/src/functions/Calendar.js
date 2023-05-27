@@ -14,7 +14,7 @@ const months = [
     'Novembre',
     'Décembre'
   ];
-  const daynames = [
+export const daynames = [
     "Dimanche",
     "Lundi",
     "Mardi",
