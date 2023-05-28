@@ -8,11 +8,12 @@ import { RiDeleteBinLine } from 'react-icons/ri'
 import { daynames } from '../../functions/Calendar';
 import { generateTimeOptions } from '../../functions/timeOptions'
 //
-const Carousel = ({ details, ifCarouselChanged }) => {
+const Carousel = ({ details, ifCarouselChanged, ifSlotDeleted }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [id, setId] = React.useState(details[currentIndex].id);
   const [updateSlotVar, setUpdateSlotVar] = React.useState(false)
   const [displayCarousel, setDisplayCarousel] = React.useState(true);
+  const [deleteSlotVariable, setDeleteSlotVariable] = React.useState(false);
   const [slotClasses, setSlotClasses] = React.useState(details[currentIndex].classes);
   const [date, setDate] = React.useState(details[currentIndex].date);
   const [weekdayVariable, setWeekdayVariable] = React.useState(details[currentIndex].weekday);
@@ -21,7 +22,7 @@ const Carousel = ({ details, ifCarouselChanged }) => {
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? details.length - 1 : prevIndex - 1));
 };
-  const handleNext = () => {
+const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex === details.length - 1 ? 0 : prevIndex + 1));
 };
 React.useEffect(()=>{
@@ -32,19 +33,38 @@ React.useEffect(()=>{
     setStartTime(details[currentIndex].from_time.slice(0,5));
     setEndTime(details[currentIndex].to_time.slice(0,5));
 }, [currentIndex]);
-  const updateSlot = () => {
-      setUpdateSlotVar(true)
-      setDisplayCarousel(false)
-  }
-  const deleteSlot = () => {
-      return (
-          <></>
-      )
-  }
-  const discardChangesUpdate = () => {
-      setDisplayCarousel(true);
-      setUpdateSlotVar(false);
-  }
+const updateSlot = () => {
+    setUpdateSlotVar(true)
+    setDisplayCarousel(false)
+}
+const deleteSlot = () => {
+    setDeleteSlotVariable(true);
+    setDisplayCarousel(false);
+}
+const discardChangesUpdate = () => {
+    setDisplayCarousel(true);
+    setUpdateSlotVar(false);
+    setDeleteSlotVariable(false);
+}
+async function deleteSlotFromTable(id){
+    fetch(`/slot/1/delete/${id}`, {
+        method: 'POST',
+        body: JSON.stringify({id: id}),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+            ifSlotDeleted(true);
+            setDeleteSlotVariable(false);
+            setDisplayCarousel(true);
+            handleNext();
+        })
+        .catch(error => {
+            console.log("Err: " +error)
+        });
+}
   async function submitUpdate(e) {
     e.preventDefault(); 
     const updateSlotData = {
@@ -66,7 +86,7 @@ React.useEffect(()=>{
             setUpdateSlotVar(false);
             setDisplayCarousel(true);
             ifCarouselChanged(true);
-            console.log(weekdayVariable)
+
         })
         .catch(error => {
             console.log("Err: " +error)
@@ -143,7 +163,7 @@ React.useEffect(()=>{
                             className="card__value card_value_weekname" 
                             onChange={(event) => setWeekdayVariable(daynames.indexOf(event.target.value))}
                         >
-                            <option value={daynames[weekdayVariable]} defaultValue>
+                            <option  defaultValue={daynames[weekdayVariable]}>
                                 {daynames[weekdayVariable]}
                             </option>
                             {daynames.map((day)=>{
@@ -178,29 +198,34 @@ React.useEffect(()=>{
                         >Annuler
                         </button>
                     </p>
-                </form>
-                
-               
+                </form>    
             </div>
+        }
+        {deleteSlotVariable && 
+        <div className="card-container">
+            <h3>Voulez-vous supprimer cette demande?</h3>
+            <div className="card">
+                {
+                    details[currentIndex].status 
+                        ? 
+                    <span className="card__value">{<MdOutlineDoneOutline className="icon-calendar-validated"/>}</span> 
+                        : 
+                    <span className="card__value">{<CiNoWaitingSign className="icon-calendar-waiting"/>}</span>
+                }
+                <span className="card__value">{slotClasses}</span>
+                {date !== null && <span className="card__value">{date.slice(0,10)}</span>}
+                {weekdayVariable !== null && <span className="card__value card_value_weekname">{daynames[weekdayVariable]}s</span>}
+                <span className="card__value">entre {startTime.slice(0,5)} et {endTime.slice(0,5)}</span>
+                <p className="update-slot-button-container">
+                    <button type="button" onClick={()=>{deleteSlotFromTable(details[currentIndex].id)}}>Supprimer</button>
+                    <button type="button" onClick={discardChangesUpdate}>Annuler</button>
+                </p>
+                
+            </div>     
+        </div>
         }
         </>
     )
 };
 
 export default Carousel;
-
-/*
- <div className="card">
-                    {
-                        details[currentIndex].status 
-                            ? 
-                        <span className="card__value">{<MdOutlineDoneOutline className="icon-calendar-validated"/>}</span> 
-                            : 
-                        <span className="card__value">{<CiNoWaitingSign className="icon-calendar-waiting"/>}</span>
-                    }
-                    <span className="card__value">{details[currentIndex].classes}</span>
-                    {details[currentIndex].date && <span className="card__value">{details[currentIndex].date.slice(0,10)}</span>}
-                    {details[currentIndex].weekday && <span className="card__value card_value_weekname">{daynames[details[currentIndex].weekday]}s</span>}
-                    <span className="card__value">entre {details[currentIndex].from_time.slice(0,5)} et {details[currentIndex].to_time.slice(0,5)}</span>
-                </div>
-*/

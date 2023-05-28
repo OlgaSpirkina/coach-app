@@ -16,13 +16,21 @@ export default function UserSlot() {
   const [isFormVisible, setIsFormVisible] = React.useState(false);
   const [trainersSlot, setTrainersSlot] = React.useState([]);
   const [carouselChanged, setCarouselChanged] = React.useState(false);
+  const [deletedSlot, setDeletedSlot] = React.useState(false)
+  console.log(deletedSlot)
   React.useEffect(()=>{
     fetch("/slot/1")
       .then(res => res.json())
-      .then(data => setTrainersSlot(data.slot))
-  }, [afterSubmit, carouselChanged]);
+      .then(data => {
+        setTrainersSlot(data.slot);
+        setDeletedSlot(false);
+      })
+  }, [afterSubmit, carouselChanged, deletedSlot]);
   const ifCarouselChanged = () =>{
     setCarouselChanged(true);
+  }
+  const ifSlotDeleted = () => {
+    setDeletedSlot(true);
   }
   const toggleFormVisibility = () => {
     setIsFormVisible(!isFormVisible);
@@ -64,28 +72,6 @@ export default function UserSlot() {
   const radioButtonChoice = (param) => {
     setSelectedOption(param);
   };
-  // const generateTimeOptions = () => {
-  //   const options = [];
-  //   let hour = 9;
-  //   let minute = 0;
-  
-  //   while (!(hour === 20 && minute === 0)) {
-  //     const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-  //     options.push(
-  //       <option key={timeString} value={timeString}>
-  //         {timeString}
-  //       </option>
-  //     );
-  
-  //     minute += 15;
-  //     if (minute === 60) {
-  //       hour++;
-  //       minute = 0;
-  //     }
-  //   }
-  
-  //   return options;
-  // };
   return (
     <section id="userslot-container">
       <div className="slot-display-hide-parent">
@@ -157,7 +143,8 @@ export default function UserSlot() {
             {
               selectedOption === false &&
               <label>
-                <select onChange={(event) => setWeekday(event.target.value)} value={weekday}>
+                <select onChange={(event) => setWeekday(event.target.value)} value={weekday ? weekday : ''}>
+                  <option defaultValue=''>Choisissez le jour de la semaine</option>
                   {daynames.map((day)=>{
                     return <option key={day}>{day}</option>
                   })}
@@ -200,7 +187,7 @@ export default function UserSlot() {
         <>
           {
             isListVisible && 
-              <Carousel  details={trainersSlot} ifCarouselChanged={ifCarouselChanged}/>
+              <Carousel  details={trainersSlot} ifCarouselChanged={ifCarouselChanged} ifSlotDeleted={ifSlotDeleted}/>
           }
         </>
       </div>  

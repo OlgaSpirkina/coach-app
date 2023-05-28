@@ -124,7 +124,10 @@ label{
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 16px;
 }
-
+.card span{
+  margin: 0;
+  line-height: 1.2;
+}
 /* Calendar Header */
 .calendar-header {
   display: flex;
@@ -397,7 +400,8 @@ tbody tr:nth-child(even) {
   color: var(--theYellow);
 }
 #userslot-form button,
-.update-slot-form button {
+.update-slot-form button,
+.card .update-slot-button-container button {
   display: block;
   width: 100%;
   padding: 16px;
@@ -417,12 +421,20 @@ tbody tr:nth-child(even) {
   display: flex;
   justify-content: space-between;
 }
-.update-slot-button-container button{
-  width: 35%;
+.update-slot-button-container button,
+.card .update-slot-button-container button{
+  width: 35% !important;
 }
 .update-slot-button-container button[type="button"]{
   background-color: var(--darkGrey);
   color: #fff;
+}
+.update-slot-button-container button:nth-child(1){
+  background-color: #007bff;
+}
+.card .update-slot-button-container{
+  width: 100%;
+  margin: 0;
 }
 /***  ***/
 footer{
