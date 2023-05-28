@@ -2,6 +2,7 @@ import React from 'react'
 import { daynames } from '../../functions/Calendar.js'
 import { MdExpandMore } from 'react-icons/md'
 import Carousel from '../../components/Slot/Carousel.js';
+import { generateTimeOptions } from '../../functions/timeOptions.js';
 //
 export default function UserSlot() {
   const [slotClasses, setSlotClasses] = React.useState('');
@@ -14,12 +15,15 @@ export default function UserSlot() {
   const [isListVisible, setIsListVisible] = React.useState(false);
   const [isFormVisible, setIsFormVisible] = React.useState(false);
   const [trainersSlot, setTrainersSlot] = React.useState([]);
+  const [carouselChanged, setCarouselChanged] = React.useState(false);
   React.useEffect(()=>{
     fetch("/slot/1")
       .then(res => res.json())
       .then(data => setTrainersSlot(data.slot))
-  }, [afterSubmit]);
-  
+  }, [afterSubmit, carouselChanged]);
+  const ifCarouselChanged = () =>{
+    setCarouselChanged(true);
+  }
   const toggleFormVisibility = () => {
     setIsFormVisible(!isFormVisible);
   };
@@ -60,28 +64,28 @@ export default function UserSlot() {
   const radioButtonChoice = (param) => {
     setSelectedOption(param);
   };
-  const generateTimeOptions = () => {
-    const options = [];
-    let hour = 9;
-    let minute = 0;
+  // const generateTimeOptions = () => {
+  //   const options = [];
+  //   let hour = 9;
+  //   let minute = 0;
   
-    while (!(hour === 20 && minute === 0)) {
-      const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-      options.push(
-        <option key={timeString} value={timeString}>
-          {timeString}
-        </option>
-      );
+  //   while (!(hour === 20 && minute === 0)) {
+  //     const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+  //     options.push(
+  //       <option key={timeString} value={timeString}>
+  //         {timeString}
+  //       </option>
+  //     );
   
-      minute += 15;
-      if (minute === 60) {
-        hour++;
-        minute = 0;
-      }
-    }
+  //     minute += 15;
+  //     if (minute === 60) {
+  //       hour++;
+  //       minute = 0;
+  //     }
+  //   }
   
-    return options;
-  };
+  //   return options;
+  // };
   return (
     <section id="userslot-container">
       <div className="slot-display-hide-parent">
@@ -196,7 +200,7 @@ export default function UserSlot() {
         <>
           {
             isListVisible && 
-              <Carousel  details={trainersSlot} />
+              <Carousel  details={trainersSlot} ifCarouselChanged={ifCarouselChanged}/>
           }
         </>
       </div>  

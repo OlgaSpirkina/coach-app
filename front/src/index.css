@@ -2,6 +2,8 @@
   --darkBlue: #004479;
   --darkGrey: #26252d;
   --theYellow: #f19711;
+  --redFireBrick: #b22222;
+  --greenValidate: #22b26a;
   --lighterYellow: rgba(241, 151, 17, 0.75);
 }
 * {
@@ -268,6 +270,32 @@ tbody tr:nth-child(even) {
   justify-content: space-between;
   align-items: center;
 }
+.carousel .card-container .card{
+  min-width: 300px;
+  min-height: 170px;
+  line-height: 1.5;
+}
+.card_value_weekname{
+  color: var(--theYellow);
+  font-weight: bold;
+}
+.card-update-delete{
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: row !important;
+  justify-content: flex-end !important;
+  align-items: center;
+}
+.card-update-delete svg{
+  font-size: 2rem;
+}
+.update{
+  color: var(--greenValidate);
+}
+.delete{
+  color: var(--redFireBrick);
+}
 .nex-prev-carousel{
   font-size:  2.5rem;
   color: var(--theYellow) !important;
@@ -275,12 +303,13 @@ tbody tr:nth-child(even) {
 }
 .icon-calendar-validated{
   font-size: 2rem;
-  fill: green !important;
-  stroke: green !important;
+  color: var(--greenValidate) !important;
+  fill: var(--greenValidate) !important;
+  stroke: var(--greenValidate) !important;
 }
 .icon-calendar-waiting{
   font-size: 2rem;
-  fill: rgb(207, 20, 20) !important;
+  fill: var(--redFireBrick) !important;
 }
 .slot-display-hide{
   min-width: 400px;
@@ -311,7 +340,7 @@ tbody tr:nth-child(even) {
   margin: 1rem auto;
 }
 #userslot-container div h1{
-  color: rgb(207, 20, 20);
+  color: var(--redFireBrick);
   font-weight: bold;
 }
 #userslot-container div p{
@@ -326,7 +355,19 @@ tbody tr:nth-child(even) {
   border: 2px solid var(--theYellow);
   border-radius: .3rem;
 }
-#userslot-form p{
+.update-slot-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.update-slot-form p,
+.update-slot-form input{
+  margin: .5rem 0;
+}
+
+#userslot-form p,
+.update-slot-form p{
   width: 100%;
 }
 #userslot-form label {
@@ -336,12 +377,17 @@ tbody tr:nth-child(even) {
 }
 
 #userslot-form input,
-#userslot-form select {
+#userslot-form select,
+.update-slot-form input,
+.update-slot-form select {
   width: 100%;
   padding: 10px;
   font-size: 20px;
   border-radius: 4px;
   border: 1px solid #ccc;
+}
+.update-slot-form select{
+  color: inherit;
 }
 #userslot-form input[type="radio"] {
   -ms-transform: scale(1.5); 
@@ -350,7 +396,8 @@ tbody tr:nth-child(even) {
   border: 1px solid var(--theYellow);
   color: var(--theYellow);
 }
-#userslot-form button {
+#userslot-form button,
+.update-slot-form button {
   display: block;
   width: 100%;
   padding: 16px;
@@ -361,6 +408,21 @@ tbody tr:nth-child(even) {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  text-align: center;
+}
+.update-slot-form select {
+  width: 40%;
+}
+.update-slot-button-container{
+  display: flex;
+  justify-content: space-between;
+}
+.update-slot-button-container button{
+  width: 35%;
+}
+.update-slot-button-container button[type="button"]{
+  background-color: var(--darkGrey);
+  color: #fff;
 }
 /***  ***/
 footer{

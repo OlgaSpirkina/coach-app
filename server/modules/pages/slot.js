@@ -19,12 +19,24 @@ slotRouter.post('/', (req,res) => {
   conn.query(sql, [freeslot], function(err, result){
     if (err) {
       console.error(err);
-      console.error(err);
       return res.status(500).json({ error: 'Error inserting data' });
     }
     return res.status(200).json({ message: 'Votre demande est bien transmise' });
   })
 });
-
+slotRouter.post('/1/:id', (req,res) => {
+  const updateSlot = req.body;
+  console.log(updateSlot)
+  const theDate = updateSlot.date !== null ? updateSlot.date.slice(0,10) : updateSlot.date;
+  const weekd = updateSlot.weekday !== null ? updateSlot.weekday : null
+  let sql = 'UPDATE free_slot SET classes = ?, weekday = ?, date = ?, from_time = ?, to_time = ? WHERE id = ?';
+  conn.query(sql, [updateSlot.classes, weekd, theDate, updateSlot.from_time, updateSlot.to_time, req.params.id], function(err, result){
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Error inserting data' });
+    }
+    return res.status(200).json({ message: 'Update done' });
+  })
+});
 
 module.exports = slotRouter;
