@@ -17,7 +17,6 @@ export default function UserSlot() {
   const [trainersSlot, setTrainersSlot] = React.useState([]);
   const [carouselChanged, setCarouselChanged] = React.useState(false);
   const [deletedSlot, setDeletedSlot] = React.useState(false)
-  console.log(deletedSlot)
   React.useEffect(()=>{
     fetch("/slot/1")
       .then(res => res.json())

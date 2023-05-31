@@ -13,12 +13,13 @@ import UserCalendar from './pages/User/UserCalendar'
 import UserMonths from './pages/User/UserMonths'
 import UserDashboard from './pages/User/UserDashboard'
 import Layout from './components/Layout'
-
+import AuthenticationForm from './authentication/AuthenticationForm';
 function App(){
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route path="login" element={<AuthenticationForm />} />
           <Route index element={<Home/>}/>
           <Route path="about" element={<About/>}/>
           <Route path="trainers" element={<Trainers/>}/>
@@ -32,6 +33,7 @@ function App(){
           </Route>
         </Route>  
       </Routes>
+      
     </BrowserRouter>
   )
 }

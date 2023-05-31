@@ -443,6 +443,38 @@ footer{
   left: 0;
   margin: 1rem;
 }
+/*** Authentication, Login, Forgot Password ***/
+.authentication-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.authentication-form label {
+  margin-bottom: 10px;
+}
+
+.authentication-form input {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.authentication-form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+
+/***   ***/
 @media (min-width: 576px) {
   #userslot-form,
   #userslot-container div,
@@ -451,6 +483,9 @@ footer{
   }
 }
 @media (max-width: 600px) {
+  .authentication-form {
+    max-width: 300px;
+  }
   .daily_card_container{
     flex-direction: column;
   }
