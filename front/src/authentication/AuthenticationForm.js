@@ -30,16 +30,21 @@ const AuthenticationForm = () => {
           'Content-Type': 'application/json'
         }
       });
-
       if (response.ok) {
+        
         // Authentication successful
         const data = await response.json();
-        Cookies.set('authToken', data.sessionId);
+        // Set the session cookie
+        Cookies.set('authToken', data.sessionId, {
+          secure: true,    // Ensure the cookie is only transmitted over HTTPS
+          httpOnly: true   // Restrict access to the cookie from client-side JavaScript
+        });
         console.log(data.message);
       } else {
         // Authentication failed
-        const errorData = await response.json();
-        console.log(errorData.message);
+       // const errorData = await response.json();
+        console.log("RESPONSE")
+        console.log(response);
       }
     } catch (error) {
       console.log('Error:', error);
