@@ -6,89 +6,118 @@ const flash =require('connect-flash')
 const cookieParser = require('cookie-parser')
 const LocalStrategy = require('passport-local').Strategy;
 
-
 const loginRouter = express.Router();
 loginRouter.use(flash())
 loginRouter.use(cookieParser());
+loginRouter.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', "http://127.0.0.1:5000/");
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 //, isAuthenticatedFunction
+
 passport.use('local', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true //passback entire req to call back
   } , function (req, email, password, done){
-    if(!email || !password ) {
-        return done(null, false, req.flash('message','All fields are required.'));
-    }
-    conn.query("select * from users where email = ?", [email], function(err, rows){
-        if (err) return done(req.flash('error message: ',err));
-        if(!rows.length){
-            return done(null, false, req.flash('message','Adresse éléctronique ou mot de passe est invalid'));
+        if(!email || !password ) {
+            return done(null, false, req.flash('message','All fields are required.'));
         }
-        // password from db and password from login form are toString()
-        if(!bcrypt.compareSync(password.toString(), rows[0].password.toString())){
-            return done(null, false, req.flash('message',"Le mot de passe saisi n\'est pas correcte"));
-        }
-        if(rows[0].reg_verification === "NO" && req.body.first_conn){
-            updateRegVerification(req.body.first_conn);
-        return done(null, rows[0]);
-        }
-        if(rows[0].reg_verification === "YES"){return done(null, rows[0]);}
-        if(rows[0].reg_verification === "NO" && req.body.first_conn === undefined){
-            return done(null, false, req.flash('message','Consultez votre boite éléctronique et suivez les instructions afin de confirmer votre inscription.'));
-        }
-    })
+        conn.query("select * from users where email = ?", [email], function(err, rows){
+            if (err) return done(req.flash('error message: ',err));
+            else if (!rows.length) {
+              return done(null, false, { statusCode: 404, message: "Adresse éléctronique n'est pas invalide." });
+            }
+            else if(!bcrypt.compareSync(password.toString(), rows[0].password.toString())){
+                return done(null, false, { statusCode: 401, message: "Le mot de passe saisi n'est pas correct." });
+            }
+            else if(rows[0].reg_verification === "NO" && req.body.first_conn){
+                return done(null, rows[0]);
+            }
+            else if(rows[0].reg_verification === "YES"){return done(null, rows[0]);}
+            else if(rows[0].reg_verification === "NO" && req.body.first_conn === undefined){
+                return done(null, false, { statusCode: 403, message: 'Consultez votre boite éléctronique et suivez les instructions afin de confirmer votre inscription.' });
+            }
+        })
     }
 ));
+
 passport.serializeUser(function(user, cb) {
-process.nextTick(function() {
-    cb(null, { id: user.id, username: user.username });
-});
-});
-passport.deserializeUser(function(user, cb) {
-process.nextTick(function() {
-    return cb(null, user);
-});
-});
+    process.nextTick(function() {
+      try {
+        cb(null, { id: user.id, username: user.username });
+      } catch (err) {
+        cb(err); // Pass the error to cb
+      }
+    });
+  });
+  
+  passport.deserializeUser(function(user, cb) {
+    process.nextTick(function() {
+      try {
+        cb(null, user);
+      } catch (err) {
+        cb(err); // Pass the error to cb
+      }
+    });
+  });
+
 // END Password
-loginRouter.post("/", passport.authenticate('local', {
-    failureFlash: true
-}), function(req, res) {
+
+loginRouter.post("/", function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
     const cookies = req.cookies || {};
-    const sessionId = cookies['connect.sid'];
+    const sessionId = cookies['connect.sid']
+    if (err) {
+      console.error("Passport authentication error:", err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    if (!user) {
+      const statusCode = info && info.statusCode ? info.statusCode : 401;
+      const message = info && info.message ? info.message : 'Unauthorized';
+      return res.status(statusCode).json({ error: message });
+    }
+
     
     if (sessionId) {
       const response = {
         sessionId: sessionId
-    };
-    console.log(response)
-      // Send the response object to the React component
+      };
       res.json(response);
     } else {
-      // Handle the case when the desired cookie is not present
-      console.error('Session cookie not found');
+      console.log("ERROR: Session cookie not found");
       res.status(400).json({ error: 'Session cookie not found' });
     }
+  })(req, res, next);
 });
-/*
-loginRouter.post("/", passport.authenticate('local', {
-    failureFlash: true
-}), function(req, res, info){
-    console.log(res._server.client)
-});
-*/
-module.exports = loginRouter;
-/*
-loginRouter.post('/', (req,res) => {
-    const authBody = req.body;
-    console.log(authBody)
-    let sql = 'SELECT * FROM users where email = ?;';
-    conn.query(sql, [authBody.email], function(err, result){
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Error during authentication' });
-        }
 
-        return res.status(200).json({ message: 'Credentials are ok' });
-    })
+loginRouter.use(function(err, req, res, next) {
+  if (err) {
+    console.log("ERROR:", err);
+    if (err.statusCode && err.message) {
+      res.status(err.statusCode).json({ error: err.message });
+    } else {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  } else {
+    next();
+  }
 });
-*/
+module.exports = loginRouter;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

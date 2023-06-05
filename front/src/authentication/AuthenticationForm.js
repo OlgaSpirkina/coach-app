@@ -21,13 +21,16 @@ const AuthenticationForm = () => {
       email: email,
       password: password
     };
-
     try {
-      const response = await fetch('/login', {
+      const response = await fetch(`/login`, {
         method: 'POST',
         body: JSON.stringify(loginCredentials),
+        withCredentials: true,
         headers: {
-          'Content-Type': 'application/json'
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+          withCredentials: true,
+          credentials:'include'
         }
       });
       if (response.ok) {
@@ -37,19 +40,67 @@ const AuthenticationForm = () => {
         // Set the session cookie
         Cookies.set('authToken', data.sessionId, {
           secure: true,    // Ensure the cookie is only transmitted over HTTPS
-          httpOnly: true   // Restrict access to the cookie from client-side JavaScript
+          httpOnly: false   // Restrict access to the cookie from client-side JavaScript
         });
-        console.log(data.message);
+        
       } else {
-        // Authentication failed
-       // const errorData = await response.json();
-        console.log("RESPONSE")
-        console.log(response);
+        console.log(response)
+        // Handle non-2xx HTTP status codes
+        const errorMessage = await response.text();
+       
+        if (response.status === 401) {
+          // Unauthorized: Incorrect password
+          console.log(errorMessage)
+          // Update the state or show the error message in your component
+        } else if (response.status === 404) {
+          // Not Found: Email doesn't exist
+        
+          // Update the state or show the error message in your component
+        } else {
+          // Handle other error cases
+          console.log('Unhandled error:', errorMessage);
+        }
       }
     } catch (error) {
       console.log('Error:', error);
     }
 
+
+
+    
+/*
+   try {
+      const response = await fetch('/login', {
+        method: 'POST',
+        body: JSON.stringify(loginCredentials),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    } catch (error) {
+      console.log("CATCH")
+      if (error.response) {
+        console.log("ERRR")
+        // The request was made and the server responded with an error status
+        if (error.response.status === 401) {
+          // Unauthorized: Incorrect password
+          const errorMessage = error.response.data.message;
+          console.log(errorMessage)
+          // Update the state or show the error message in your component
+        } else if (error.response.status === 404) {
+          // Not Found: Email doesn't exist
+          const errorMessage = error.response.data.message;
+          // Update the state or show the error message in your component
+        } else {
+          // Handle other error cases
+          // ...
+        }
+      } else {
+        // Handle other types of errors, e.g., network error
+        // ...
+      }
+    } 
+*/
     // Clear form inputs
     setEmail('');
     setPassword('');

@@ -14,16 +14,19 @@ const slotRouter = require('./modules/pages/slot.js')
 const loginRouter = require('./modules/authentication/login.js')
 //
 const app = express()
+app.use(cookieParser())
 app.use(express.json())
 dotenv.config()
 //
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser())
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
+    secure: true,
+    httpOnly: false,
     maxAge: 3600000
   }
 }));
