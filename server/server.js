@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser')
 const flash = require('express-flash')
 const session = require('express-session')
 const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy;
 const conn = require('./database.js')
 const dotenv = require('dotenv')
 // API end-points

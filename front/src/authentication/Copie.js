@@ -1,7 +1,8 @@
-import React from 'react';
-import Cookies from 'js-cookie';
+import React from 'react'
+import Cookies from 'js-cookie'
 
 const AuthenticationForm = () => {
+  
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -18,7 +19,7 @@ const AuthenticationForm = () => {
 
     const loginCredentials = {
       email: email,
-      password: password,
+      password: password
     };
 
     try {
@@ -29,30 +30,29 @@ const AuthenticationForm = () => {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
+       
       });
-
+      console.log(response.ok)
       if (response.ok) {
         // Authentication successful
         const data = await response;
         // Set the session cookie
         Cookies.set('authToken', data.sessionId, {
           secure: true,    // Ensure the cookie is only transmitted over HTTPS
-          httpOnly: false,   // Restrict access to the cookie from client-side JavaScript
+          httpOnly: false   // Restrict access to the cookie from client-side JavaScript
         });
-
-        // Redirect to authenticated page
-        window.location.href = '/';
+        
       } else {
         // Handle non-2xx HTTP status codes
         const errorMessage = await response.text();
-
+       
         if (response.status === 401) {
           // Unauthorized: Incorrect password
-          console.log(errorMessage);
+          console.log(errorMessage)
           // Update the state or show the error message in your component
         } else if (response.status === 404) {
           // Not Found: Email doesn't exist
-          console.log(errorMessage);
+          console.log(errorMessage)
           // Update the state or show the error message in your component
         } else {
           // Handle other error cases
@@ -63,10 +63,21 @@ const AuthenticationForm = () => {
       console.log('Error:', error);
     }
 
+
     // Clear form inputs
     setEmail('');
     setPassword('');
   };
+
+  // Check if the authToken cookie exists
+  const authToken = Cookies.get('authToken');
+  const isAuthenticated = !!authToken;
+  console.log(authToken)
+  if (isAuthenticated) {
+    // User is authenticated, redirect to authenticated page
+    window.location.href = '/';
+    return null;
+  }
 
   return (
     <form className="authentication-form" onSubmit={handleSubmit}>
@@ -94,3 +105,4 @@ const AuthenticationForm = () => {
 };
 
 export default AuthenticationForm;
+

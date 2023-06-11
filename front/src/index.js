@@ -18,7 +18,8 @@ function App(){
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+      <Route path="/" element={<Layout />}>
+          
           <Route path="login" element={<AuthenticationForm />} />
           <Route index element={<Home/>}/>
           <Route path="about" element={<About/>}/>
@@ -30,8 +31,9 @@ function App(){
             <Route path="calendar/*" element={<UserCalendar />} >
               <Route path=":monthid" element={<UserMonths />}/>
             </Route>
-          </Route>
-        </Route>  
+          </Route> 
+</Route>
+        
       </Routes>
       
     </BrowserRouter>
@@ -43,6 +45,10 @@ root.render(
     <App/>    
   </React.StrictMode>
 );
+/*
+  
+
+*/
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
