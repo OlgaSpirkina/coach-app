@@ -29,36 +29,23 @@ const AuthenticationForm = () => {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
+        withCredentials: true
       });
 
-      if (response.ok) {
-        // Authentication successful
-        const data = await response;
-        // Set the session cookie
-        Cookies.set('authToken', data.sessionId, {
-          secure: true,    // Ensure the cookie is only transmitted over HTTPS
-          httpOnly: false,   // Restrict access to the cookie from client-side JavaScript
-        });
+     if (!response.ok) {
+      throw new Error('Login failed');
+    }
 
-        // Redirect to authenticated page
-        window.location.href = '/';
-      } else {
-        // Handle non-2xx HTTP status codes
-        const errorMessage = await response.text();
+    const data = await response.json();
+    console.log(response)
+    if (data.success) {
+      window.location.href = '/';
+      console.log("coucoucoucoucoucoucouc")
 
-        if (response.status === 401) {
-          // Unauthorized: Incorrect password
-          console.log(errorMessage);
-          // Update the state or show the error message in your component
-        } else if (response.status === 404) {
-          // Not Found: Email doesn't exist
-          console.log(errorMessage);
-          // Update the state or show the error message in your component
-        } else {
-          // Handle other error cases
-          console.log('Unhandled error:', errorMessage);
-        }
-      }
+    } else {
+      throw new Error('Login failed');
+    }
+    
     } catch (error) {
       console.log('Error:', error);
     }
@@ -94,3 +81,36 @@ const AuthenticationForm = () => {
 };
 
 export default AuthenticationForm;
+/*
+      if (response.ok) {
+        // Authentication successful
+        const data = await response;
+        console.log(data.json())
+        // Set the session cookie
+        Cookies.set('authToken', data.sessionId, {
+          secure: true,    // Ensure the cookie is only transmitted over HTTPS
+          httpOnly: true,   // Restrict access to the cookie from client-side JavaScript
+        });
+        const authToken = Cookies.get('authToken');
+        console.log("COUCOU")
+        console.log(Cookies.get('authToken'))
+        // Redirect to authenticated page
+        window.location.href = '/';
+      }   // else {
+      //   // Handle non-2xx HTTP status codes
+      //   const errorMessage = await response.text();
+
+      //   if (response.status === 401) {
+      //     // Unauthorized: Incorrect password
+      //     console.log(errorMessage);
+      //     // Update the state or show the error message in your component
+      //   } else if (response.status === 404) {
+      //     // Not Found: Email doesn't exist
+      //     console.log(errorMessage);
+      //     // Update the state or show the error message in your component
+      //   } else {
+      //     // Handle other error cases
+      //     console.log('Unhandled error:', errorMessage);
+      //   }
+      // }
+      */

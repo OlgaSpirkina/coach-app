@@ -64,6 +64,7 @@ passport.serializeUser(function(user, cb) {
 // END Password
 
 loginRouter.post("/", function(req, res, next) {
+  console.log(req.cookies)
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       console.error("Passport authentication error:", err);
@@ -72,7 +73,7 @@ loginRouter.post("/", function(req, res, next) {
     if (user) {
       // Set a cookie
       res.cookie('authToken', req.sessionID, {
-        secure: true,    // Ensure the cookie is only transmitted over HTTPS
+        secure: false,    // Ensure the cookie is only transmitted over HTTPS
         httpOnly: true,  // Restrict access to the cookie from client-side JavaScript
       });
       res.status(200).json({ success: true });

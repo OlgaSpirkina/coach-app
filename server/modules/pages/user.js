@@ -4,6 +4,18 @@ const modifyDateAndTime = require('../functions/dateAndTime.js')
 
 const userRouter = express.Router();
 //, isAuthenticatedFunction
+/*
+userRouter.get('/', (req,res,next) => {
+  let sql = 'SELECT * FROM timetable WHERE trainer_id=1 ORDER BY choose_month DESC;';
+  conn.query(sql, function(err, result){
+    if (err) {
+      console.error(err);
+      return;
+    }
+    res.send({"timetable": result})
+  })
+});
+ */
 userRouter.get('/', (req,res,next) => {
   let sql = 'SELECT * FROM timetable WHERE trainer_id=1 ORDER BY choose_month DESC;';
   conn.query(sql, function(err, result){
