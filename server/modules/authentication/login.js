@@ -2,29 +2,31 @@ const express = require('express')
 const conn = require('../../database.js')
 const passport =require('passport')
 const bcrypt =require('bcrypt')
+const cors = require('cors')
 const flash =require('connect-flash')
 const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 const LocalStrategy = require('passport-local').Strategy;
 
 const loginRouter = express.Router();
+loginRouter.use(cors())
+loginRouter.options("*", cors())
+loginRouter.use(passport.initialize());
+loginRouter.use(passport.session());
 loginRouter.use(passport.authenticate('session'));
 loginRouter.use(cookieParser());
+loginRouter.use(bodyParser.json())
 loginRouter.use(flash())
-loginRouter.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', "http://127.0.0.1:5000/login");
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
 passport.use('local', new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true //passback entire req to call back
-  } , function (req, email, password, done){
-        if(!email || !password ) {
+  } , function (req, username, password, done){
+      console.log(username)
+        if(!username || !password ) {
             return done(null, false, req.flash('message','All fields are required.'));
         }
-        conn.query("select * from users where email = ?", [email], function(err, rows){
+        conn.query("select * from users where email = ?", [username], function(err, rows){
             if (err) return done(req.flash('error message: ',err));
             if ((!rows.length) || (!bcrypt.compareSync(password.toString(), rows[0].password.toString()))) {
               return done(null, false, { statusCode: 404, message: "Adresse éléctronique ou mot de passe n'est pas invalide." });
@@ -59,12 +61,9 @@ passport.serializeUser(function(user, cb) {
       }
     });
   });
-  loginRouter.use(passport.initialize());
-  loginRouter.use(passport.session());
-// END Password
 
+// END Password
 loginRouter.post("/", function(req, res, next) {
-  console.log(req.cookies)
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       console.error("Passport authentication error:", err);
@@ -81,14 +80,8 @@ loginRouter.post("/", function(req, res, next) {
     } else {
       const statusCode = info && info.statusCode ? info.statusCode : 401;
       const message = info && info.message ? info.message : 'Unauthorized';
-
-      // Set the response headers to allow CORS
-      res.header('Access-Control-Allow-Origin', '*');
-      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
       return res.status(statusCode).json({ error: message });
     }
-    
   })(req, res, next);
 });
 

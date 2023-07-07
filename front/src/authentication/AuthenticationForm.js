@@ -1,5 +1,6 @@
 import React from 'react';
 import Cookies from 'js-cookie';
+import loginRouter from '../../../server/modules/authentication/login';
 
 const AuthenticationForm = () => {
   const [email, setEmail] = React.useState('');
@@ -27,18 +28,15 @@ const AuthenticationForm = () => {
         body: JSON.stringify(loginCredentials),
         headers: {
           'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        withCredentials: true
+          'Authorization': 'Basic ' + base64.encode(`${email}:${password}`)
+        }
       });
 
      if (!response.ok) {
       throw new Error('Login failed');
     }
-
-    const data = await response.json();
-    console.log(response)
-    if (data.success) {
+    console.log(response.ok)
+    if (response.ok) {
       window.location.href = '/';
       console.log("coucoucoucoucoucoucouc")
 
