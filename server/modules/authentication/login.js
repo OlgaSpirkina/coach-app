@@ -22,7 +22,6 @@ passport.use('local', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true //passback entire req to call back
   } , function (req, username, password, done){
-      console.log(username)
         if(!username || !password ) {
             return done(null, false, req.flash('message','All fields are required.'));
         }
@@ -71,11 +70,13 @@ loginRouter.post("/", function(req, res, next) {
     if (user) {
       // Set a cookie
       res.cookie('token_auth', req.sessionID, {
-        secure: false,    // Ensure the cookie is only transmitted over HTTPS
+        secure: true,    // Ensure the cookie is only transmitted over HTTPS
         httpOnly: true,  // Restrict access to the cookie from client-side JavaScript
       });
+      req.session.isAuthenticated = true
+      req.session.email = user.email
+      console.log(req.session)
       res.status(200).json({ success: true });
-    
     } else {
       const statusCode = info && info.statusCode ? info.statusCode : 401;
       const message = info && info.message ? info.message : 'Unauthorized';

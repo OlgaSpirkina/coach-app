@@ -15,8 +15,9 @@ import UserCalendar from './pages/User/UserCalendar'
 import UserMonths from './pages/User/UserMonths'
 import UserDashboard from './pages/User/UserDashboard'
 import Layout from './components/Layout'
-import AuthRequired from './authentication/AuthRequired';
+import AuthRequired from './authentication/AuthRequired'
 //import Login from './authentication/Login';
+const d = new Date()
 function App() {
   const [cookieValue, setCookieValue] = React.useState(Cookies.get('react_auth') || '')
   React.useEffect(() => {
@@ -42,8 +43,8 @@ function App() {
           body: JSON.stringify({ username, password }),
         });
         if (response.ok) {
-          Cookies.set("react_auth", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9", {
-            expires: 7,
+          Cookies.set("react_auth", process.env.REACT_APP_TOKEN, {
+            expires: d.setTime(d.getTime() + 24 * 60 * 60 * 1000),
           });
           setCookieValue(Cookies.get('react_auth'))
           setLoginError(false);

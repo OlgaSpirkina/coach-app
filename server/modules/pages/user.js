@@ -2,7 +2,7 @@ const express = require('express')
 const conn = require('../../database.js')
 const modifyDateAndTime = require('../functions/dateAndTime.js')
 
-const userRouter = express.Router();
+const userRouter = express.Router()
 //, isAuthenticatedFunction
 /*
 userRouter.get('/', (req,res,next) => {
@@ -17,6 +17,8 @@ userRouter.get('/', (req,res,next) => {
 });
  */
 userRouter.get('/', (req,res,next) => {
+  console.log("from user")
+  console.log(req.session)
   let sql = 'SELECT * FROM timetable WHERE trainer_id=1 ORDER BY choose_month DESC;';
   conn.query(sql, function(err, result){
     if (err) {
