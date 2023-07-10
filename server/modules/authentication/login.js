@@ -61,7 +61,6 @@ passport.serializeUser(function(user, cb) {
       }
     });
   });
-
 // END Password
 loginRouter.post("/", function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
@@ -71,7 +70,7 @@ loginRouter.post("/", function(req, res, next) {
     }
     if (user) {
       // Set a cookie
-      res.cookie('authToken', req.sessionID, {
+      res.cookie('token_auth', req.sessionID, {
         secure: false,    // Ensure the cookie is only transmitted over HTTPS
         httpOnly: true,  // Restrict access to the cookie from client-side JavaScript
       });
